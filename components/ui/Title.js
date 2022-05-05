@@ -5,17 +5,14 @@ import Colors from '../../constants/colors';
 const Title = (props) => {
   const { children } = props;
 
-  return (
-    <View>
-      <Text style={styles.title}>{children}</Text>
-    </View>
-  );
+  return <Text style={styles.title}>{children}</Text>;
 };
 
 export default Title;
 
 const styles = StyleSheet.create({
   title: {
+    fontFamily: 'open-sans-bold',
     fontSize: 24,
     fontWeight: 'bold',
     color: Colors.primary600,
