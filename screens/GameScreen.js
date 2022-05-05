@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import NumberContainer from '../components/game/NumberContainer';
+import Card from '../components/ui/Card';
+import InstructionText from '../components/ui/InstructionText';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import Title from '../components/ui/Title';
 import generateRandomBetween from '../helpers/generateRandomBetween';
+import { Ionicons } from '@expo/vector-icons';
 
 let minBoundary = 1;
 let maxBoundary = 100;
@@ -48,18 +51,23 @@ const GameScreen = (props) => {
     <View style={styles.screen}>
       <Title>Opponents guess</Title>
       <NumberContainer>{computerGuess}</NumberContainer>
-      <View>
-        <Text>Higher or lower?</Text>
-        <View>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
-            -
-          </PrimaryButton>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
-            +
-          </PrimaryButton>
+      <Card>
+        <InstructionText style={styles.InstructionText}>
+          Higher or lower?
+        </InstructionText>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+              <Ionicons name='md-remove' size={24} />
+            </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+              <Ionicons name='md-add' size={24} />
+            </PrimaryButton>
+          </View>
         </View>
-      </View>
-      {/* <View>LOG rounds</View> */}
+      </Card>
     </View>
   );
 };
@@ -70,5 +78,14 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+  },
+  InstructionText: {
+    marginBottom: 24,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+  },
+  buttonContainer: {
+    flex: 1,
   },
 });
