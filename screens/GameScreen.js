@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert, FlatList } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  FlatList,
+  useWindowDimensions,
+} from 'react-native';
 import NumberContainer from '../components/game/NumberContainer';
 import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
@@ -14,6 +20,7 @@ let maxBoundary = 100;
 
 const GameScreen = (props) => {
   const { userNumber, gameOverHandler } = props;
+  const { width, height } = useWindowDimensions();
 
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [computerGuess, setComputerGuess] = useState(initialGuess);
@@ -57,9 +64,8 @@ const GameScreen = (props) => {
     maxBoundary = 100;
   }, []);
 
-  return (
-    <View style={styles.screen}>
-      <Title>Opponents guess</Title>
+  let content = (
+    <>
       <NumberContainer>{computerGuess}</NumberContainer>
       <Card>
         <InstructionText style={styles.InstructionText}>
@@ -78,6 +84,33 @@ const GameScreen = (props) => {
           </View>
         </View>
       </Card>
+    </>
+  );
+
+  if (width > 500) {
+    content = (
+      <>
+        <View style={styles.buttonsContainerWide}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+              <Ionicons name='md-remove' size={24} />
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{computerGuess}</NumberContainer>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+              <Ionicons name='md-add' size={24} />
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  }
+
+  return (
+    <View style={styles.screen}>
+      <Title>Opponents guess</Title>
+      {content}
       <View style={styles.listContainer}>
         <FlatList
           data={computerRounds}
@@ -110,6 +143,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+  },
+  buttonsContainerWide: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   listContainer: {
     flex: 1,
